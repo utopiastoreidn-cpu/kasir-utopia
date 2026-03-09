@@ -159,7 +159,7 @@
         }
 
         function formatRP(angka) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+            return new Intl.NumberFormat('id-ID').format(angka);
         }
 
         function renderStruk() {
@@ -220,10 +220,10 @@
             p += "TUJUAN : " + pData.tujuan + "\n";
             p += "NAMA   : " + pData.nama.substring(0, 22) + "\n";
             p += "--------------------------------\n";
-            p += formatLine("NOMINAL", pData.nom) + "\n";
-            p += formatLine("ADMIN", pData.adm) + "\n";
+            p += formatLine("NOMINAL", "Rp " + formatRP(nom)) + "\n";
+            p += formatLine("ADMIN", "Rp " + formatRP(adm)) + "\n";
             p += "--------------------------------\n";
-            p += formatLine("TOTAL", pData.total) + "\n";
+            p += formatLine("TOTAL", "Rp " + formatRP(total)) + "\n";
             p += "--------------------------------\n";
             p += formatCenter("TERIMA KASIH") + "\n";
             p += "\n\n\n\n\n";
@@ -264,3 +264,4 @@
     </script>
 </body>
 </html>
+
