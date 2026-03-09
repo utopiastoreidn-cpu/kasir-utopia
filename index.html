@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Utopia POS - Ultra Stable</title>
+    <title>Utopia POS - Alignment Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
@@ -14,16 +14,15 @@
         .line { border-top: 1px dashed black; margin: 5px 0; }
         .flex-between { display: flex; justify-content: space-between; }
         .service-card { transition: all 0.2s; cursor: pointer; border: 1px solid #1e293b; }
-        .service-card:active { transform: scale(0.95); }
     </style>
 </head>
 <body class="p-4">
 
     <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div class="lg:col-span-7 space-y-6">
-            <div class="flex justify-between items-center bg-slate-900 p-5 rounded-2xl">
+            <div class="flex justify-between items-center bg-slate-900 p-5 rounded-2xl border border-slate-800">
                 <h1 class="text-xl font-black text-blue-500">UTOPIA STORE</h1>
-                <div id="clock" class="text-lg font-bold">00:00:00</div>
+                <div id="clock" class="text-lg font-bold text-slate-400">00:00:00</div>
             </div>
 
             <div class="grid grid-cols-4 gap-2">
@@ -33,16 +32,16 @@
                 <div onclick="selectService('TAGIHAN')" class="service-card bg-red-600 p-3 rounded-xl text-center text-[10px] font-bold">BILL</div>
             </div>
 
-            <div id="form-container" class="bg-slate-900 p-6 rounded-2xl hidden space-y-4">
-                <select id="sub-layanan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none"></select>
-                <input type="text" id="rek" placeholder="Nomor Tujuan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none">
-                <input type="text" id="nama" placeholder="Nama Pelanggan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none">
+            <div id="form-container" class="bg-slate-900 p-6 rounded-2xl hidden space-y-4 border border-slate-800">
+                <select id="sub-layanan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none text-white"></select>
+                <input type="text" id="rek" placeholder="Nomor Tujuan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none text-white">
+                <input type="text" id="nama" placeholder="Nama Pelanggan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none text-white">
                 <div class="grid grid-cols-2 gap-4">
-                    <input type="number" id="nominal" placeholder="Nominal" oninput="renderStruk()" class="bg-slate-800 p-3 rounded-xl outline-none font-bold">
-                    <input type="number" id="admin" value="3000" oninput="renderStruk()" class="bg-slate-800 p-3 rounded-xl outline-none">
+                    <input type="number" id="nominal" placeholder="Nominal" oninput="renderStruk()" class="bg-slate-800 p-3 rounded-xl outline-none font-bold text-white">
+                    <input type="number" id="admin" value="3000" oninput="renderStruk()" class="bg-slate-800 p-3 rounded-xl outline-none text-white">
                 </div>
                 <input type="number" id="bayar" placeholder="Tunai" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl text-emerald-400 font-bold text-xl outline-none">
-                <button onclick="printBluetooth()" id="btn-print" class="w-full bg-blue-600 py-4 rounded-xl font-black hover:bg-blue-500 transition-colors">CETAK STRUK</button>
+                <button onclick="printBluetooth()" id="btn-print" class="w-full bg-blue-600 py-4 rounded-xl font-black hover:bg-blue-500 text-white">CETAK STRUK</button>
             </div>
         </div>
 
@@ -66,12 +65,22 @@
                 </div>
                 <div class="line"></div>
                 <div class="space-y-1">
-                    <div class="flex-between"><span>NOMINAL</span><span id="st-nom">0</span></div>
-                    <div class="flex-between"><span>ADMIN</span><span id="st-admin">0</span></div>
+                    <div class="grid grid-cols-12">
+                        <span class="col-span-5">NOMINAL</span><span class="col-span-2 text-right">Rp</span><span id="st-nom" class="col-span-5 text-right">0</span>
+                    </div>
+                    <div class="grid grid-cols-12">
+                        <span class="col-span-5">ADMIN</span><span class="col-span-2 text-right">Rp</span><span id="st-admin" class="col-span-5 text-right">0</span>
+                    </div>
                     <div class="line"></div>
-                    <div class="flex-between font-bold text-[14px]"><span>TOTAL</span><span id="st-total">0</span></div>
-                    <div class="flex-between italic text-slate-500"><span>BAYAR</span><span id="st-bayar">0</span></div>
-                    <div class="flex-between italic font-bold"><span>KEMBALI</span><span id="st-kembali">0</span></div>
+                    <div class="grid grid-cols-12 font-bold text-[13px]">
+                        <span class="col-span-5">TOTAL</span><span class="col-span-2 text-right">Rp</span><span id="st-total" class="col-span-5 text-right">0</span>
+                    </div>
+                    <div class="grid grid-cols-12 italic text-slate-500">
+                        <span class="col-span-5">BAYAR</span><span class="col-span-2 text-right">Rp</span><span id="st-bayar" class="col-span-5 text-right">0</span>
+                    </div>
+                    <div class="grid grid-cols-12 italic font-bold">
+                        <span class="col-span-5">KEMBALI</span><span class="col-span-2 text-right">Rp</span><span id="st-kembali" class="col-span-5 text-right">0</span>
+                    </div>
                 </div>
                 <div class="line mt-4"></div>
                 <div class="text-center text-[10px]">
@@ -79,7 +88,6 @@
                     <p>BUKTI PEMBAYARAN SAH</p>
                     <p>TERIMA KASIH</p>
                 </div>
-                <div class="h-4"></div>
             </div>
         </div>
     </div>
@@ -113,11 +121,32 @@
             document.getElementById('st-produk').innerText = document.getElementById('sub-layanan').value;
             document.getElementById('st-rek').innerText = document.getElementById('rek').value || '-';
             document.getElementById('st-nama').innerText = (document.getElementById('nama').value || '-').toUpperCase();
-            document.getElementById('st-nom').innerText = "Rp " + fmtNum(nom);
-            document.getElementById('st-admin').innerText = "Rp " + fmtNum(adm);
-            document.getElementById('st-total').innerText = "Rp " + fmtNum(tot);
-            document.getElementById('st-bayar').innerText = "Rp " + fmtNum(byr);
-            document.getElementById('st-kembali').innerText = "Rp " + fmtNum(Math.max(0, byr - tot));
+            
+            document.getElementById('st-nom').innerText = fmtNum(nom);
+            document.getElementById('st-admin').innerText = fmtNum(adm);
+            document.getElementById('st-total').innerText = fmtNum(tot);
+            document.getElementById('st-bayar').innerText = fmtNum(byr);
+            document.getElementById('st-kembali').innerText = fmtNum(Math.max(0, byr - tot));
+        }
+
+        // FUNGSI BARU UNTUK SEJAJARKAN RP
+        function fixPrice(label, price) {
+            const width = 32;
+            const labelPart = label; // misal "NOMINAL"
+            const rpPart = "Rp";
+            const pricePart = fmtNum(price);
+            
+            // Hitung sisa spasi
+            // Label di kiri, Rp di tengah (posisi karakter ke-15), Price di mentok kanan
+            let line = labelPart;
+            let spacesToRp = 17 - labelPart.length; // Rp akan mulai di kolom 18
+            line += " ".repeat(spacesToRp > 0 ? spacesToRp : 1) + rpPart;
+            
+            let currentLen = line.length;
+            let spacesToPrice = width - currentLen - pricePart.length;
+            line += " ".repeat(spacesToPrice > 0 ? spacesToPrice : 1) + pricePart;
+            
+            return line;
         }
 
         function fixL(l, r) {
@@ -139,9 +168,8 @@
             const byr = parseInt(document.getElementById('bayar').value) || 0;
             const tot = nom + adm;
 
-            // KUMPULKAN BARIS DALAM ARRAY (Strategi Baris demi Baris)
             let lines = [
-                "\x1B\x40", // Reset
+                "\x1B\x40",
                 fixC("UTOPIA STORE"),
                 fixC("Prigen, Pasuruan"),
                 "--------------------------------",
@@ -152,18 +180,18 @@
                 "TUJUAN : " + (document.getElementById('rek').value || '-'),
                 "NAMA   : " + (document.getElementById('nama').value || '-').toUpperCase().substring(0, 22),
                 "--------------------------------",
-                fixL("NOMINAL", "Rp " + fmtNum(nom)),
-                fixL("ADMIN", "Rp " + fmtNum(adm)),
+                fixPrice("NOMINAL", nom),
+                fixPrice("ADMIN", adm),
                 "--------------------------------",
-                fixL("TOTAL", "Rp " + fmtNum(tot)),
-                fixL("BAYAR", "Rp " + fmtNum(byr)),
-                fixL("KEMBALI", "Rp " + fmtNum(Math.max(0, byr - tot))),
+                fixPrice("TOTAL", tot),
+                fixPrice("BAYAR", byr),
+                fixPrice("KEMBALI", Math.max(0, byr - tot)),
                 "--------------------------------",
                 fixC("STATUS: BERHASIL"),
                 "--------------------------------",
                 fixC("BUKTI PEMBAYARAN SAH"),
                 fixC("TERIMA KASIH"),
-                "\n\n\n\n\n" // Spasi potong
+                "\n\n\n\n\n"
             ];
 
             try {
@@ -180,20 +208,15 @@
                 btn.innerText = "MENCETAK...";
 
                 for (let line of lines) {
-                    // Bersihkan karakter aneh di setiap baris dan tambahkan line break
                     let cleanLine = line.replace(/[^\x20-\x7E\n\r\x1B]/g, "") + "\n";
-                    let data = encoder.encode(cleanLine);
-                    
-                    // Kirim per baris secara utuh
-                    await char.writeValue(data);
-                    // Jeda 150ms antar baris agar printer tidak "tersedak"
-                    await new Promise(r => setTimeout(r, 150)); 
+                    await char.writeValue(encoder.encode(cleanLine));
+                    await new Promise(r => setTimeout(r, 180)); // Jeda lebih aman
                 }
 
                 btn.innerText = "CETAK STRUK";
                 genRef();
                 renderStruk();
-                alert("Selesai!");
+                alert("Sukses!");
             } catch (e) {
                 btn.innerText = "CETAK STRUK";
                 alert("Gagal: " + e.message);
