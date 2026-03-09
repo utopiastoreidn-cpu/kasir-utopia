@@ -127,7 +127,7 @@
             'TUNAI': ['SETOR TUNAI', 'TARIK TUNAI'],
             'PLN': ['TOKEN PLN', 'TAGIHAN PLN'],
             'CETAK': ['PRINT HITAM PUTIH', 'PRINT BERWARNA', 'CETAK FOTO'],
-            'LAINNYA': ['PPOB', 'VA SHOPEE', 'TOP UP GAME', 'IOT PLANNER']
+            'LAINNYA': ['PPOB', 'VA SHOPEE', 'TAGIHAN FIF', 'TAGIHAN MCF', 'BPJS KESEHATAN', 'BPJS KETENAGAKERJAAN', 'BPJS DENDA', 'TOP UP GAME', 'IOT PLANNER']
         };
 
         let currentCat = '';
@@ -175,7 +175,7 @@
             if (service === 'CETAK FOTO') return 5000; // Contoh tarif foto
 
             // Default Admin Lainnya
-            return 3000;
+            return 5000;
         }
 
         function genRef() { document.getElementById('st-ref').innerText = 'TRX' + Date.now().toString().slice(-8); }
@@ -313,3 +313,4 @@
     </script>
 </body>
 </html>
+
