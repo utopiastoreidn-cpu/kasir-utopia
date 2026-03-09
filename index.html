@@ -152,11 +152,11 @@
 
             // 1. Transfer Bank & E-Wallet 
             if (category === 'BANK' || category === 'E-WALLET') {
-                if (nominal <= 50000) return 3000;
-                if (nominal <= 500000) return 5000;
-                if (nominal <= 1000000) return 10000;
-                if (nominal <= 1500000) return 15000;
-                if (nominal <= 2000000) return 20000;
+                if (nominal <= 49000) return 3000;
+                if (nominal <= 499000) return 5000;
+                if (nominal <= 999000) return 10000;
+                if (nominal <= 1499000) return 15000;
+                if (nominal <= 1999000) return 20000;
                 return 25000;
             }
 
@@ -313,4 +313,5 @@
     </script>
 </body>
 </html>
+
 
