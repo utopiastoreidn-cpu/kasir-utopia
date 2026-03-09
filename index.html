@@ -16,7 +16,7 @@
             width: 300px;
             background: #fff;
             color: #000;
-            padding: 20px 10px;
+            padding: 20px 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             border-radius: 4px;
         }
@@ -47,63 +47,73 @@
                 </div>
                 <div class="text-right">
                     <div id="clock" class="text-xl font-bold">00:00:00</div>
-                    <div class="text-slate-500 text-[10px]">VERSI WEB 2.0</div>
+                    <div class="text-slate-500 text-[10px]">VERSI POS 2.1 (THERMAL READY)</div>
                 </div>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div onclick="selectService('TRANSFER BANK', 'BCA')" class="service-card bg-blue-600 p-4 rounded-2xl flex flex-col items-center shadow-lg">
+                <div onclick="selectService('TRANSFER BANK')" class="service-card bg-blue-600 p-4 rounded-2xl flex flex-col items-center shadow-lg">
                     <span class="text-3xl mb-2">🏦</span>
-                    <span class="font-bold text-xs">TRANSFER BANK</span>
+                    <span class="font-bold text-xs text-center text-white">TRANSFER BANK</span>
                 </div>
-                <div onclick="selectService('E-WALLET', 'DANA')" class="service-card bg-emerald-600 p-4 rounded-2xl flex flex-col items-center shadow-lg">
+                <div onclick="selectService('E-WALLET')" class="service-card bg-emerald-600 p-4 rounded-2xl flex flex-col items-center shadow-lg">
                     <span class="text-3xl mb-2">📱</span>
-                    <span class="font-bold text-xs">E-WALLET</span>
+                    <span class="font-bold text-xs text-center text-white">E-WALLET</span>
                 </div>
-                <div onclick="selectService('LISTRIK', 'TOKEN PLN')" class="service-card bg-yellow-500 p-4 rounded-2xl flex flex-col items-center shadow-lg text-slate-900">
+                <div onclick="selectService('LISTRIK')" class="service-card bg-yellow-500 p-4 rounded-2xl flex flex-col items-center shadow-lg text-slate-900">
                     <span class="text-3xl mb-2">⚡</span>
-                    <span class="font-bold text-xs">TOKEN PLN</span>
+                    <span class="font-bold text-xs text-center">TOKEN PLN</span>
                 </div>
-                <div onclick="selectService('TAGIHAN', 'BPJS')" class="service-card bg-red-600 p-4 rounded-2xl flex flex-col items-center shadow-lg">
+                <div onclick="selectService('TAGIHAN')" class="service-card bg-red-600 p-4 rounded-2xl flex flex-col items-center shadow-lg text-white">
                     <span class="text-3xl mb-2">📜</span>
-                    <span class="font-bold text-xs">LEASING/BPJS</span>
+                    <span class="font-bold text-xs text-center uppercase">BPJS & Leasing</span>
                 </div>
             </div>
 
             <div id="form-container" class="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-xl hidden">
                 <div class="flex items-center gap-3 mb-6">
                     <div id="service-icon" class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-xl">🏦</div>
-                    <h2 id="service-title" class="text-xl font-bold">TRANSFER BANK</h2>
+                    <h2 id="service-title" class="text-xl font-bold uppercase">TRANSFER BANK</h2>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-4">
-                        <div id="bank-selector-container">
-                            <label class="text-xs text-slate-500 font-bold uppercase mb-1 block">Pilih Sub-Layanan</label>
-                            <select id="sub-layanan" oninput="renderStruk()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500">
-                                </select>
+                        <div>
+                            <label class="text-xs text-slate-500 font-bold uppercase mb-1 block tracking-wider">Layanan Spesifik</label>
+                            <select id="sub-layanan" oninput="renderStruk()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                            </select>
                         </div>
                         
-                        <input type="text" id="rek" placeholder="No. Rekening / No. Tujuan" oninput="renderStruk()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500">
-                        <input type="text" id="nama" placeholder="Nama Penerima / Nama Pelanggan" oninput="renderStruk()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                        <div>
+                            <label class="text-xs text-slate-500 font-bold uppercase mb-1 block tracking-wider">No. Rekening / No. Tujuan</label>
+                            <input type="text" id="rek" placeholder="Contoh: 081234xxx atau 00234xxx" oninput="renderStruk()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label class="text-xs text-slate-500 font-bold uppercase mb-1 block tracking-wider">Nama Pelanggan / Nama Rek</label>
+                            <input type="text" id="nama" placeholder="Contoh: BUDI SETIAWAN" oninput="renderStruk()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
                     </div>
 
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="text-xs text-slate-500 font-bold uppercase mb-1 block">Nominal</label>
-                                <input type="number" id="nominal" placeholder="0" oninput="renderStruk()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                                <label class="text-xs text-slate-500 font-bold uppercase mb-1 block tracking-wider">Nominal (Rp)</label>
+                                <input type="number" id="nominal" value="0" oninput="renderStruk()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 outline-none focus:ring-2 focus:ring-blue-500 font-bold">
                             </div>
                             <div>
-                                <label class="text-xs text-slate-500 font-bold uppercase mb-1 block">Admin</label>
-                                <input type="number" id="admin" value="3000" oninput="renderStruk()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                                <label class="text-xs text-slate-500 font-bold uppercase mb-1 block tracking-wider">Biaya Admin</label>
+                                <input type="number" id="admin" value="3000" oninput="renderStruk()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                         </div>
-                        <label class="text-xs text-slate-500 font-bold uppercase mb-1 block">Pembayaran Tunai</label>
-                        <input type="number" id="bayar" placeholder="0" oninput="renderStruk()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-emerald-500 font-bold text-emerald-400 text-xl">
+
+                        <div>
+                            <label class="text-xs text-slate-500 font-bold uppercase mb-1 block tracking-wider">Tunai (Bayar)</label>
+                            <input type="number" id="bayar" value="0" oninput="renderStruk()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 outline-none focus:ring-2 focus:ring-emerald-500 font-bold text-emerald-400 text-2xl">
+                        </div>
                         
-                        <button onclick="printBluetooth()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-2xl shadow-lg transition-all active:scale-95">
-                            PROSES & CETAK STRUK
+                        <button onclick="printBluetooth()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-5 rounded-2xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-3 uppercase tracking-widest">
+                            <span>🖨️</span> Cetak Struk Sekarang
                         </button>
                     </div>
                 </div>
@@ -112,7 +122,7 @@
 
         <div class="lg:col-span-4 flex flex-col items-center">
             <div class="sticky top-8">
-                <p class="text-center text-slate-500 text-[10px] font-bold uppercase mb-4 tracking-widest">Digital Receipt Preview</p>
+                <p class="text-center text-slate-500 text-[10px] font-bold uppercase mb-4 tracking-widest">Digital Preview</p>
                 
                 <div id="receipt" class="struk-canvas font-receipt text-[12px]">
                     <div class="text-center">
@@ -123,16 +133,16 @@
                     
                     <div class="line mt-4"></div>
                     <div class="flex-between text-[10px]">
-                        <span id="st-tgl">09/03/2026</span>
+                        <span id="st-tgl">--/--/----</span>
                         <span id="st-jam">00:00:00</span>
                     </div>
                     <div class="text-[10px]">REF: <span id="st-ref">TRX00000000</span></div>
                     <div class="line"></div>
 
-                    <div class="space-y-1 my-3">
-                        <div class="flex-between"><span class="uppercase">Produk</span><span id="st-produk" class="font-bold">-</span></div>
-                        <div class="flex-between"><span class="uppercase">ID/Tujuan</span><span id="st-rek" class="font-bold">-</span></div>
-                        <div class="flex-between"><span class="uppercase">Nama</span><span id="st-nama" class="font-bold">-</span></div>
+                    <div class="space-y-1 my-3 uppercase">
+                        <div class="flex-between"><span>Produk</span><span id="st-produk" class="font-bold">-</span></div>
+                        <div class="flex-between"><span>No/Tujuan</span><span id="st-rek" class="font-bold">-</span></div>
+                        <div class="flex-between"><span>Nama</span><span id="st-nama" class="font-bold">-</span></div>
                     </div>
 
                     <div class="line"></div>
@@ -140,32 +150,31 @@
                         <div class="flex-between"><span>NOMINAL</span><span id="st-nom">Rp 0</span></div>
                         <div class="flex-between"><span>BIAYA ADMIN</span><span id="st-admin">Rp 3.000</span></div>
                         <div class="line"></div>
-                        <div class="flex-between font-bold text-sm"><span>TOTAL</span><span id="st-total">Rp 3.000</span></div>
+                        <div class="flex-between font-bold text-[14px]"><span>TOTAL</span><span id="st-total">Rp 3.000</span></div>
                         <div class="flex-between italic"><span>TUNAI</span><span id="st-bayar">Rp 0</span></div>
                         <div class="flex-between italic font-bold"><span>KEMBALI</span><span id="st-kembali">Rp 0</span></div>
                     </div>
 
                     <div class="line mt-4"></div>
-                    <div class="text-center text-[9px]">
+                    <div class="text-center text-[9px] leading-tight">
                         <p>TERIMA KASIH ATAS KUNJUNGAN ANDA</p>
-                        <p class="mt-1">Simpan struk ini sebagai bukti pembayaran sah.</p>
+                        <p class="mt-1 uppercase">Struk ini adalah bukti pembayaran sah</p>
                     </div>
-                    <div class="h-12"></div>
+                    <div class="h-10"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // DATA LAYANAN
         const DATA_LAYANAN = {
-            'TRANSFER BANK': { icon: '🏦', sub: ['BRI', 'BCA', 'BNI', 'MANDIRI', 'LAINNYA'], color: 'blue' },
-            'E-WALLET': { icon: '📱', sub: ['DANA', 'GOPAY', 'OVO', 'SHOPEEPAY', 'LINKAJA'], color: 'emerald' },
-            'LISTRIK': { icon: '⚡', sub: ['TOKEN PLN', 'PLN PASCA BAYAR'], color: 'yellow' },
-            'TAGIHAN': { icon: '📜', sub: ['BPJS KESEHATAN', 'FIF GROUP', 'ADIRA FINANCE', 'BAF', 'WOM'], color: 'red' }
+            'TRANSFER BANK': { icon: '🏦', sub: ['BRI', 'BCA', 'BNI', 'MANDIRI', 'BSI', 'BANK JATIM', 'DANAMON'] },
+            'E-WALLET': { icon: '📱', sub: ['DANA', 'GOPAY', 'OVO', 'SHOPEEPAY', 'LINKAJA', 'MAXIM'] },
+            'LISTRIK': { icon: '⚡', sub: ['TOKEN PLN', 'PLN PASCA BAYAR'] },
+            'TAGIHAN': { icon: '📜', sub: ['BPJS KESEHATAN', 'FIF GROUP', 'ADIRA FINANCE', 'BAF', 'WOM FINANCE', 'MEGA FINANCE'] }
         };
 
-        function selectService(type, initialSub) {
+        function selectService(type) {
             const container = document.getElementById('form-container');
             const title = document.getElementById('service-title');
             const icon = document.getElementById('service-icon');
@@ -174,11 +183,8 @@
             container.classList.remove('hidden');
             title.innerText = type;
             icon.innerText = DATA_LAYANAN[type].icon;
-            
-            // Render sub-layanan options
             subSelect.innerHTML = DATA_LAYANAN[type].sub.map(s => `<option value="${s}">${s}</option>`).join('');
             
-            // Scroll to form
             container.scrollIntoView({ behavior: 'smooth' });
             renderStruk();
         }
@@ -205,22 +211,61 @@
             document.getElementById('st-bayar').innerText = formatRP(bayar);
             document.getElementById('st-kembali').innerText = formatRP(Math.max(0, bayar - total));
             
-            if (!document.getElementById('st-ref').innerText || document.getElementById('st-ref').innerText == 'TRX00000000') {
+            if (document.getElementById('st-ref').innerText === 'TRX00000000') {
                 document.getElementById('st-ref').innerText = 'TRX' + Date.now().toString().slice(-8);
             }
         }
 
-        // Clock Function
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString('id-ID');
-        }, 1000);
+        // --- FUNGSI FORMATTING PRINTER THERMAL (PENTING!) ---
+        function formatLine(left, right, maxWidth = 32) {
+            const spaceNeeded = maxWidth - left.length - right.length;
+            const spaces = spaceNeeded > 0 ? " ".repeat(spaceNeeded) : " ";
+            return left + spaces + right;
+        }
+
+        function formatCenter(text, maxWidth = 32) {
+            const spaceNeeded = Math.floor((maxWidth - text.length) / 2);
+            const spaces = spaceNeeded > 0 ? " ".repeat(spaceNeeded) : "";
+            return spaces + text;
+        }
 
         async function printBluetooth() {
-            const content = document.getElementById('receipt').innerText;
+            // Data Mentah untuk Printer
+            const storeName = "UTOPIA STORE";
+            const addr = "Prigen, Pasuruan";
+            const tgl = document.getElementById('st-tgl').innerText;
+            const jam = document.getElementById('st-jam').innerText;
+            const ref = document.getElementById('st-ref').innerText;
+            const produk = document.getElementById('sub-layanan').value;
+            const tujuan = document.getElementById('rek').value || '-';
+            const nama = (document.getElementById('nama').value || '-').toUpperCase();
+            const nominal = document.getElementById('st-nom').innerText;
+            const admin = document.getElementById('st-admin').innerText;
+            const total = document.getElementById('st-total').innerText;
+
+            // Membangun Teks Struk 32 Karakter
+            let p = "";
+            p += formatCenter(storeName) + "\n";
+            p += formatCenter(addr) + "\n";
+            p += "--------------------------------\n";
+            p += formatLine(tgl, jam) + "\n";
+            p += "REF: " + ref + "\n";
+            p += "--------------------------------\n";
+            p += "PRODUK : " + produk + "\n";
+            p += "TUJUAN : " + tujuan + "\n";
+            p += "NAMA   : " + nama + "\n";
+            p += "--------------------------------\n";
+            p += formatLine("NOMINAL", nominal) + "\n";
+            p += formatLine("ADMIN", admin) + "\n";
+            p += "--------------------------------\n";
+            p += formatLine("TOTAL", total) + "\n";
+            p += "--------------------------------\n";
+            p += formatCenter("TERIMA KASIH") + "\n";
+            p += formatCenter("UTAMAKAN KEJUJURAN") + "\n";
+            p += "\n\n\n\n"; // Ruang sobek
+
             const encoder = new TextEncoder();
-            // ESC/POS Reset + Teks + Feed
-            const data = encoder.encode("\x1B\x40" + content + "\n\n\n\n\n");
+            const data = encoder.encode("\x1B\x40" + p);
 
             try {
                 const device = await navigator.bluetooth.requestDevice({
@@ -231,11 +276,21 @@
                 const service = await server.getPrimaryService('000018f0-0000-1000-8000-00805f9b34fb');
                 const characteristic = await service.getCharacteristic('00002af1-0000-1000-8000-00805f9b34fb');
                 await characteristic.writeValue(data);
+                
+                // Reset Ref untuk transaksi berikutnya
+                document.getElementById('st-ref').innerText = 'TRX00000000';
+                renderStruk();
                 alert("Struk Berhasil Dicetak!");
             } catch (e) {
-                alert("Printer tidak terdeteksi atau koneksi dibatalkan.");
+                console.log(e);
+                alert("Koneksi Bluetooth Gagal/Dibatalkan.");
             }
         }
+
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('id-ID');
+        }, 1000);
     </script>
 </body>
 </html>
