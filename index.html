@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Utopia POS - Alignment Pro</title>
+    <title>Utopia POS - Automatic Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
@@ -14,6 +14,7 @@
         .line { border-top: 1px dashed black; margin: 5px 0; }
         .flex-between { display: flex; justify-content: space-between; }
         .service-card { transition: all 0.2s; cursor: pointer; border: 1px solid #1e293b; }
+        .service-card:hover { transform: translateY(-2px); border-color: #3b82f6; }
     </style>
 </head>
 <body class="p-4">
@@ -21,35 +22,61 @@
     <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div class="lg:col-span-7 space-y-6">
             <div class="flex justify-between items-center bg-slate-900 p-5 rounded-2xl border border-slate-800">
-                <h1 class="text-xl font-black text-blue-500">UTOPIA STORE</h1>
+                <div>
+                    <h1 class="text-xl font-black text-blue-500">UTOPIA STORE</h1>
+                    <p class="text-[10px] text-slate-500">Transaction Center</p>
+                </div>
                 <div id="clock" class="text-lg font-bold text-slate-400">00:00:00</div>
             </div>
 
-            <div class="grid grid-cols-4 gap-2">
-                <div onclick="selectService('TRANSFER BANK')" class="service-card bg-blue-600 p-3 rounded-xl text-center text-[10px] font-bold">BANK</div>
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
+                <div onclick="selectService('BANK')" class="service-card bg-blue-600 p-3 rounded-xl text-center text-[10px] font-bold">BANK</div>
                 <div onclick="selectService('E-WALLET')" class="service-card bg-emerald-600 p-3 rounded-xl text-center text-[10px] font-bold">E-WAL</div>
-                <div onclick="selectService('LISTRIK')" class="service-card bg-yellow-500 p-3 rounded-xl text-center text-[10px] font-bold text-black">PLN</div>
-                <div onclick="selectService('TAGIHAN')" class="service-card bg-red-600 p-3 rounded-xl text-center text-[10px] font-bold">BILL</div>
+                <div onclick="selectService('TUNAI')" class="service-card bg-orange-600 p-3 rounded-xl text-center text-[10px] font-bold">TUNAI</div>
+                <div onclick="selectService('PLN')" class="service-card bg-yellow-500 p-3 rounded-xl text-center text-[10px] font-bold text-black">PLN</div>
+                <div onclick="selectService('CETAK')" class="service-card bg-purple-600 p-3 rounded-xl text-center text-[10px] font-bold">CETAK</div>
+                <div onclick="selectService('LAINNYA')" class="service-card bg-slate-700 p-3 rounded-xl text-center text-[10px] font-bold">LAIN</div>
             </div>
 
             <div id="form-container" class="bg-slate-900 p-6 rounded-2xl hidden space-y-4 border border-slate-800">
-                <select id="sub-layanan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none text-white"></select>
-                <input type="text" id="rek" placeholder="Nomor Tujuan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none text-white">
-                <input type="text" id="nama" placeholder="Nama Pelanggan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none text-white">
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="number" id="nominal" placeholder="Nominal" oninput="renderStruk()" class="bg-slate-800 p-3 rounded-xl outline-none font-bold text-white">
-                    <input type="number" id="admin" value="3000" oninput="renderStruk()" class="bg-slate-800 p-3 rounded-xl outline-none text-white">
+                <div class="flex items-center justify-between">
+                    <h2 id="selected-title" class="text-sm font-bold text-blue-400 uppercase">Layanan</h2>
+                    <span class="text-[10px] text-red-500 font-bold italic">TIDAK BISA KASBON</span>
                 </div>
-                <input type="number" id="bayar" placeholder="Tunai" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl text-emerald-400 font-bold text-xl outline-none">
-                <button onclick="printBluetooth()" id="btn-print" class="w-full bg-blue-600 py-4 rounded-xl font-black hover:bg-blue-500 text-white">CETAK STRUK</button>
+                
+                <select id="sub-layanan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none text-white border border-slate-700"></select>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="rek" placeholder="Nomor Tujuan / Lembar" oninput="renderStruk()" class="bg-slate-800 p-3 rounded-xl outline-none text-white border border-slate-700">
+                    <input type="text" id="nama" placeholder="Nama Pelanggan" oninput="renderStruk()" class="bg-slate-800 p-3 rounded-xl outline-none text-white border border-slate-700">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-[10px] text-slate-400 ml-2">Nominal / Jumlah</label>
+                        <input type="number" id="nominal" placeholder="0" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none font-bold text-white border border-slate-700">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] text-slate-400 ml-2">Admin (Auto)</label>
+                        <input type="number" id="admin" placeholder="0" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none text-blue-400 font-bold border border-slate-700">
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-[10px] text-slate-400 ml-2">Uang Tunai Pelanggan</label>
+                    <input type="number" id="bayar" placeholder="Masukkan Jumlah Uang" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl text-emerald-400 font-bold text-xl outline-none border border-emerald-900/30">
+                </div>
+
+                <button onclick="printBluetooth()" id="btn-print" class="w-full bg-blue-600 py-4 rounded-xl font-black hover:bg-blue-500 text-white transition-colors shadow-lg shadow-blue-900/20">CETAK STRUK SEKARANG</button>
             </div>
         </div>
 
         <div class="lg:col-span-5 flex justify-center">
-            <div id="receipt" class="struk-canvas font-receipt text-[12px]">
+            <div id="receipt" class="struk-canvas font-receipt text-[12px] shadow-2xl">
                 <div class="text-center">
                     <div class="font-bold text-[16px]">UTOPIA STORE</div>
-                    <div class="text-[10px]">Prigen, Pasuruan</div>
+                    <div class="text-[10px]">Transaction Center</div>
+                    <div class="text-[9px]">utopiaproject.id</div>
                 </div>
                 <div class="line mt-4"></div>
                 <div class="flex-between text-[10px]">
@@ -87,6 +114,7 @@
                     <p class="font-bold">STATUS: BERHASIL</p>
                     <p>BUKTI PEMBAYARAN SAH</p>
                     <p>TERIMA KASIH</p>
+                    <p class="text-[8px] mt-2">PT. Utopia Digital Technology</p>
                 </div>
             </div>
         </div>
@@ -94,58 +122,111 @@
 
     <script>
         const DATA = {
-            'TRANSFER BANK': ['BRI', 'BCA', 'BNI', 'MANDIRI', 'BSI'],
-            'E-WALLET': ['DANA', 'GOPAY', 'OVO', 'SHOPEEPAY'],
-            'LISTRIK': ['TOKEN PLN', 'PLN PASCA'],
-            'TAGIHAN': ['BPJS', 'FIF', 'ADIRA', 'WOM']
+            'BANK': ['TRANSFER BRI', 'TRANSFER BCA', 'TRANSFER BNI', 'TRANSFER MANDIRI', 'TRANSFER RDN'],
+            'E-WALLET': ['DANA', 'GOPAY', 'OVO', 'SHOPEE PAY', 'LINKAJA'],
+            'TUNAI': ['SETOR TUNAI', 'TARIK TUNAI'],
+            'PLN': ['TOKEN PLN', 'TAGIHAN PLN'],
+            'CETAK': ['PRINT HITAM PUTIH', 'PRINT BERWARNA', 'CETAK FOTO'],
+            'LAINNYA': ['PPOB', 'VA SHOPEE', 'TOP UP GAME', 'IOT PLANNER']
         };
 
-        function selectService(t) {
+        let currentCat = '';
+
+        function selectService(cat) {
+            currentCat = cat;
             document.getElementById('form-container').classList.remove('hidden');
-            document.getElementById('sub-layanan').innerHTML = DATA[t].map(s => `<option value="${s}">${s}</option>`).join('');
+            document.getElementById('selected-title').innerText = cat;
+            document.getElementById('sub-layanan').innerHTML = DATA[cat].map(s => `<option value="${s}">${s}</option>`).join('');
+            
+            // Auto-reset field tertentu
+            document.getElementById('nominal').value = '';
+            document.getElementById('admin').value = '';
+            
             if(document.getElementById('st-ref').innerText === 'TRX00000000') genRef();
             renderStruk();
+        }
+
+        // LOGIKA ADMIN OTOMATIS BERDASARKAN DOKUMEN [cite: 26, 29, 37, 38]
+        function calculateAdmin(nominal, service, category) {
+            if (!nominal || nominal <= 0) return 0;
+
+            // 1. Transfer Bank & E-Wallet 
+            if (category === 'BANK' || category === 'E-WALLET') {
+                if (nominal <= 50000) return 3000;
+                if (nominal <= 500000) return 5000;
+                if (nominal <= 1000000) return 10000;
+                if (nominal <= 1500000) return 15000;
+                if (nominal <= 2000000) return 20000;
+                return 25000;
+            }
+
+            // 2. Setor & Tarik Tunai 
+            if (category === 'TUNAI') {
+                if (nominal <= 500000) return 10000;
+                if (nominal <= 1000000) return 15000;
+                if (nominal <= 1500000) return 20000;
+                if (nominal <= 2000000) return 25000;
+                return 30000;
+            }
+
+            // 3. Cetak Dokumen 
+            if (service === 'PRINT HITAM PUTIH') return nominal * 500;
+            if (service === 'PRINT BERWARNA') return nominal * 1000;
+            if (service === 'CETAK FOTO') return 5000; // Contoh tarif foto
+
+            // Default Admin Lainnya
+            return 3000;
         }
 
         function genRef() { document.getElementById('st-ref').innerText = 'TRX' + Date.now().toString().slice(-8); }
         function fmtNum(n) { return new Intl.NumberFormat('id-ID').format(n); }
 
         function renderStruk() {
-            const nom = parseInt(document.getElementById('nominal').value) || 0;
-            const adm = parseInt(document.getElementById('admin').value) || 0;
-            const byr = parseInt(document.getElementById('bayar').value) || 0;
-            const tot = nom + adm;
+            const service = document.getElementById('sub-layanan').value;
+            let nom = parseInt(document.getElementById('nominal').value) || 0;
+            
+            // Hitung Admin
+            const autoAdmin = calculateAdmin(nom, service, currentCat);
+            
+            // Jika kategori cetak, nominal di struk adalah hasil kali, bukan input 'jumlah lembar'
+            let displayNominal = nom;
+            let finalAdmin = autoAdmin;
 
+            if (currentCat === 'CETAK') {
+                displayNominal = autoAdmin;
+                finalAdmin = 0; // Biaya sudah masuk ke harga cetak
+            } else {
+                document.getElementById('admin').value = autoAdmin;
+                finalAdmin = parseInt(document.getElementById('admin').value) || 0;
+            }
+
+            const byr = parseInt(document.getElementById('bayar').value) || 0;
+            const tot = displayNominal + finalAdmin;
+
+            // Update UI Struk
             document.getElementById('st-tgl').innerText = new Date().toLocaleDateString('id-ID');
-            document.getElementById('st-jam').innerText = new Date().toLocaleTimeString('id-ID');
-            document.getElementById('st-produk').innerText = document.getElementById('sub-layanan').value;
+            document.getElementById('st-jam').innerText = new Date().toLocaleTimeString('id-ID').replace(/\./g, ':');
+            document.getElementById('st-produk').innerText = service;
             document.getElementById('st-rek').innerText = document.getElementById('rek').value || '-';
             document.getElementById('st-nama').innerText = (document.getElementById('nama').value || '-').toUpperCase();
             
-            document.getElementById('st-nom').innerText = fmtNum(nom);
-            document.getElementById('st-admin').innerText = fmtNum(adm);
+            document.getElementById('st-nom').innerText = fmtNum(displayNominal);
+            document.getElementById('st-admin').innerText = fmtNum(finalAdmin);
             document.getElementById('st-total').innerText = fmtNum(tot);
             document.getElementById('st-bayar').innerText = fmtNum(byr);
             document.getElementById('st-kembali').innerText = fmtNum(Math.max(0, byr - tot));
         }
 
-        // FUNGSI BARU UNTUK SEJAJARKAN RP
+        // Helper alignment untuk thermal printer 32 kolom
         function fixPrice(label, price) {
             const width = 32;
-            const labelPart = label; // misal "NOMINAL"
             const rpPart = "Rp";
             const pricePart = fmtNum(price);
-            
-            // Hitung sisa spasi
-            // Label di kiri, Rp di tengah (posisi karakter ke-15), Price di mentok kanan
-            let line = labelPart;
-            let spacesToRp = 17 - labelPart.length; // Rp akan mulai di kolom 18
+            let line = label;
+            let spacesToRp = 17 - label.length;
             line += " ".repeat(spacesToRp > 0 ? spacesToRp : 1) + rpPart;
-            
-            let currentLen = line.length;
-            let spacesToPrice = width - currentLen - pricePart.length;
+            let spacesToPrice = width - line.length - pricePart.length;
             line += " ".repeat(spacesToPrice > 0 ? spacesToPrice : 1) + pricePart;
-            
             return line;
         }
 
@@ -163,35 +244,40 @@
 
         async function printBluetooth() {
             const btn = document.getElementById('btn-print');
-            const nom = parseInt(document.getElementById('nominal').value) || 0;
-            const adm = parseInt(document.getElementById('admin').value) || 0;
-            const byr = parseInt(document.getElementById('bayar').value) || 0;
+            const nom = parseInt(document.getElementById('st-nom').innerText.replace(/\./g, '')) || 0;
+            const adm = parseInt(document.getElementById('st-admin').innerText.replace(/\./g, '')) || 0;
             const tot = nom + adm;
+            const byr = parseInt(document.getElementById('st-bayar').innerText.replace(/\./g, '')) || 0;
 
             let lines = [
-                "\x1B\x40",
-                fixC("UTOPIA STORE"),
-                fixC("Prigen, Pasuruan"),
-                "--------------------------------",
-                fixL(document.getElementById('st-tgl').innerText, document.getElementById('st-jam').innerText),
-                "REF: " + document.getElementById('st-ref').innerText,
-                "--------------------------------",
-                "PRODUK : " + document.getElementById('sub-layanan').value,
-                "TUJUAN : " + (document.getElementById('rek').value || '-'),
-                "NAMA   : " + (document.getElementById('nama').value || '-').toUpperCase().substring(0, 22),
-                "--------------------------------",
-                fixPrice("NOMINAL", nom),
-                fixPrice("ADMIN", adm),
-                "--------------------------------",
-                fixPrice("TOTAL", tot),
-                fixPrice("BAYAR", byr),
-                fixPrice("KEMBALI", Math.max(0, byr - tot)),
-                "--------------------------------",
-                fixC("STATUS: BERHASIL"),
-                "--------------------------------",
-                fixC("BUKTI PEMBAYARAN SAH"),
-                fixC("TERIMA KASIH"),
-                "\n\n\n\n\n"
+                "\x1B\x40", // Initialize
+                "\x1B\x61\x01", // Center align
+                "UTOPIA STORE\n",
+                "Transaction Center\n",
+                "--------------------------------\n",
+                "\x1B\x61\x00", // Left align
+                fixL(document.getElementById('st-tgl').innerText, document.getElementById('st-jam').innerText) + "\n",
+                "REF: " + document.getElementById('st-ref').innerText + "\n",
+                "--------------------------------\n",
+                "PRODUK : " + document.getElementById('st-produk').innerText + "\n",
+                "TUJUAN : " + document.getElementById('st-rek').innerText + "\n",
+                "NAMA   : " + document.getElementById('st-nama').innerText.substring(0, 22) + "\n",
+                "--------------------------------\n",
+                fixPrice("NOMINAL", nom) + "\n",
+                fixPrice("ADMIN", adm) + "\n",
+                "--------------------------------\n",
+                "\x1B\x45\x01", // Bold on
+                fixPrice("TOTAL", tot) + "\n",
+                "\x1B\x45\x00", // Bold off
+                fixPrice("BAYAR", byr) + "\n",
+                fixPrice("KEMBALI", Math.max(0, byr - tot)) + "\n",
+                "--------------------------------\n",
+                "\x1B\x61\x01",
+                "STATUS: BERHASIL\n",
+                "BUKTI PEMBAYARAN SAH\n",
+                "TERIMA KASIH\n",
+                "utopiaproject.id\n",
+                "\n\n\n\n"
             ];
 
             try {
@@ -208,23 +294,21 @@
                 btn.innerText = "MENCETAK...";
 
                 for (let line of lines) {
-                    let cleanLine = line.replace(/[^\x20-\x7E\n\r\x1B]/g, "") + "\n";
-                    await char.writeValue(encoder.encode(cleanLine));
-                    await new Promise(r => setTimeout(r, 180)); // Jeda lebih aman
+                    await char.writeValue(encoder.encode(line));
+                    await new Promise(r => setTimeout(r, 100));
                 }
 
-                btn.innerText = "CETAK STRUK";
+                btn.innerText = "CETAK STRUK SEKARANG";
                 genRef();
-                renderStruk();
-                alert("Sukses!");
+                alert("Struk Berhasil Dicetak!");
             } catch (e) {
-                btn.innerText = "CETAK STRUK";
-                alert("Gagal: " + e.message);
+                btn.innerText = "CETAK STRUK SEKARANG";
+                alert("Koneksi Gagal: " + e.message);
             }
         }
 
         setInterval(() => {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString('id-ID');
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString('id-ID').replace(/\./g, ':');
         }, 1000);
     </script>
 </body>
