@@ -230,62 +230,70 @@
         }
 
         async function printBluetooth() {
-            // Data Mentah untuk Printer
-            const storeName = "UTOPIA STORE";
-            const addr = "Prigen, Pasuruan";
-            const tgl = document.getElementById('st-tgl').innerText;
-            const jam = document.getElementById('st-jam').innerText;
-            const ref = document.getElementById('st-ref').innerText;
-            const produk = document.getElementById('sub-layanan').value;
-            const tujuan = document.getElementById('rek').value || '-';
-            const nama = (document.getElementById('nama').value || '-').toUpperCase();
-            const nominal = document.getElementById('st-nom').innerText;
-            const admin = document.getElementById('st-admin').innerText;
-            const total = document.getElementById('st-total').innerText;
+    // 1. Susun Data (Tetap sama seperti sebelumnya)
+    const storeName = "UTOPIA STORE";
+    const addr = "Prigen, Pasuruan";
+    const tgl = document.getElementById('st-tgl').innerText;
+    const jam = document.getElementById('st-jam').innerText;
+    const ref = document.getElementById('st-ref').innerText;
+    const produk = document.getElementById('sub-layanan').value;
+    const tujuan = document.getElementById('rek').value || '-';
+    const nama = (document.getElementById('nama').value || '-').toUpperCase();
+    const nominal = document.getElementById('st-nom').innerText;
+    const admin = document.getElementById('st-admin').innerText;
+    const total = document.getElementById('st-total').innerText;
 
-            // Membangun Teks Struk 32 Karakter
-            let p = "";
-            p += formatCenter(storeName) + "\n";
-            p += formatCenter(addr) + "\n";
-            p += "--------------------------------\n";
-            p += formatLine(tgl, jam) + "\n";
-            p += "REF: " + ref + "\n";
-            p += "--------------------------------\n";
-            p += "PRODUK : " + produk + "\n";
-            p += "TUJUAN : " + tujuan + "\n";
-            p += "NAMA   : " + nama + "\n";
-            p += "--------------------------------\n";
-            p += formatLine("NOMINAL", nominal) + "\n";
-            p += formatLine("ADMIN", admin) + "\n";
-            p += "--------------------------------\n";
-            p += formatLine("TOTAL", total) + "\n";
-            p += "--------------------------------\n";
-            p += formatCenter("TERIMA KASIH") + "\n";
-            p += formatCenter("UTAMAKAN KEJUJURAN") + "\n";
-            p += "\n\n\n\n"; // Ruang sobek
+    let p = "";
+    p += "\x1B\x40"; // Reset Printer
+    p += formatCenter(storeName) + "\n";
+    p += formatCenter(addr) + "\n";
+    p += "--------------------------------\n";
+    p += formatLine(tgl, jam) + "\n";
+    p += "REF: " + ref + "\n";
+    p += "--------------------------------\n";
+    p += "PRODUK : " + produk.substring(0, 22) + "\n"; // Potong jika kepanjangan
+    p += "TUJUAN : " + tujuan + "\n";
+    p += "NAMA   : " + nama.substring(0, 22) + "\n";
+    p += "--------------------------------\n";
+    p += formatLine("NOMINAL", nominal) + "\n";
+    p += formatLine("ADMIN", admin) + "\n";
+    p += "--------------------------------\n";
+    p += formatLine("TOTAL", total) + "\n";
+    p += "--------------------------------\n";
+    p += formatCenter("TERIMA KASIH") + "\n";
+    p += formatCenter("BUKTI PEMBAYARAN SAH") + "\n";
+    p += "\n\n\n\n\n"; // Beri ruang lebih banyak untuk sobek
 
-            const encoder = new TextEncoder();
-            const data = encoder.encode("\x1B\x40" + p);
+    try {
+        const device = await navigator.bluetooth.requestDevice({
+            filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }],
+            optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb']
+        });
+        
+        const server = await device.gatt.connect();
+        const service = await server.getPrimaryService('000018f0-0000-1000-8000-00805f9b34fb');
+        const characteristic = await service.getCharacteristic('00002af1-0000-1000-8000-00805f9b34fb');
 
-            try {
-                const device = await navigator.bluetooth.requestDevice({
-                    filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }],
-                    optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb']
-                });
-                const server = await device.gatt.connect();
-                const service = await server.getPrimaryService('000018f0-0000-1000-8000-00805f9b34fb');
-                const characteristic = await service.getCharacteristic('00002af1-0000-1000-8000-00805f9b34fb');
-                await characteristic.writeValue(data);
-                
-                // Reset Ref untuk transaksi berikutnya
-                document.getElementById('st-ref').innerText = 'TRX00000000';
-                renderStruk();
-                alert("Struk Berhasil Dicetak!");
-            } catch (e) {
-                console.log(e);
-                alert("Koneksi Bluetooth Gagal/Dibatalkan.");
-            }
+        // --- TEKNIK CHUNKING (PENGIRIMAN BERTAHAP) ---
+        const encoder = new TextEncoder();
+        const data = encoder.encode(p);
+        const chunkSize = 20; // Kirim per 20 karakter
+        
+        for (let i = 0; i < data.length; i += chunkSize) {
+            const chunk = data.slice(i, i + chunkSize);
+            await characteristic.writeValue(chunk);
+            // Beri jeda 50ms antar paket agar printer sempat memproses
+            await new Promise(resolve => setTimeout(resolve, 50));
         }
+
+        document.getElementById('st-ref').innerText = 'TRX' + Date.now().toString().slice(-8);
+        renderStruk();
+        alert("Cetak Selesai!");
+        
+    } catch (e) {
+        alert("Gagal: " + e.message);
+    }
+}
 
         setInterval(() => {
             const now = new Date();
@@ -294,3 +302,4 @@
     </script>
 </body>
 </html>
+
