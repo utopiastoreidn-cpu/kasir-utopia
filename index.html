@@ -3,68 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Utopia POS - Auto Admin & History</title>
+    <title>Utopia POS - Alignment Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #020617; color: white; }
         .font-receipt { font-family: 'Courier Prime', monospace; color: black; }
-        .struk-canvas { width: 300px; background: white; padding: 20px 15px; border-radius: 4px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .struk-canvas { width: 300px; background: white; padding: 20px 15px; border-radius: 4px; }
         .line { border-top: 1px dashed black; margin: 5px 0; }
+        .flex-between { display: flex; justify-content: space-between; }
         .service-card { transition: all 0.2s; cursor: pointer; border: 1px solid #1e293b; }
-        .history-card { background: #0f172a; border: 1px solid #1e293b; padding: 10px; border-radius: 10px; margin-bottom: 8px; }
     </style>
 </head>
 <body class="p-4">
 
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div class="lg:col-span-4 space-y-6">
-            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
-                <h1 class="text-xl font-black text-blue-500 italic">UTOPIA STORE</h1>
-                <div id="clock" class="text-xs text-slate-500">00:00:00</div>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-7 space-y-6">
+            <div class="flex justify-between items-center bg-slate-900 p-5 rounded-2xl border border-slate-800">
+                <h1 class="text-xl font-black text-blue-500">UTOPIA STORE</h1>
+                <div id="clock" class="text-lg font-bold text-slate-400">00:00:00</div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
-                <div onclick="selectService('TRANSFER')" class="service-card bg-blue-600 p-4 rounded-xl text-center text-[10px] font-bold uppercase">Transfer / E-Wallet</div>
-                <div onclick="selectService('TARIK')" class="service-card bg-emerald-600 p-4 rounded-xl text-center text-[10px] font-bold uppercase">Setor / Tarik</div>
+            <div class="grid grid-cols-4 gap-2">
+                <div onclick="selectService('TRANSFER BANK')" class="service-card bg-blue-600 p-3 rounded-xl text-center text-[10px] font-bold">BANK</div>
+                <div onclick="selectService('E-WALLET')" class="service-card bg-emerald-600 p-3 rounded-xl text-center text-[10px] font-bold">E-WAL</div>
+                <div onclick="selectService('LISTRIK')" class="service-card bg-yellow-500 p-3 rounded-xl text-center text-[10px] font-bold text-black">PLN</div>
+                <div onclick="selectService('TAGIHAN')" class="service-card bg-red-600 p-3 rounded-xl text-center text-[10px] font-bold">BILL</div>
             </div>
 
             <div id="form-container" class="bg-slate-900 p-6 rounded-2xl hidden space-y-4 border border-slate-800">
                 <select id="sub-layanan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none text-white"></select>
                 <input type="text" id="rek" placeholder="Nomor Tujuan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none text-white">
-                <input type="text" id="nama" placeholder="Nama Pelanggan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none text-white uppercase">
+                <input type="text" id="nama" placeholder="Nama Pelanggan" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl outline-none text-white">
                 <div class="grid grid-cols-2 gap-4">
-                    <input type="number" id="nominal" placeholder="Nominal" oninput="renderStruk()" class="bg-slate-800 p-3 rounded-xl outline-none font-bold text-blue-400">
-                    <input type="number" id="admin" placeholder="Admin" oninput="renderStruk()" class="bg-slate-800 p-3 rounded-xl outline-none text-slate-400">
+                    <input type="number" id="nominal" placeholder="Nominal" oninput="renderStruk()" class="bg-slate-800 p-3 rounded-xl outline-none font-bold text-white">
+                    <input type="number" id="admin" value="3000" oninput="renderStruk()" class="bg-slate-800 p-3 rounded-xl outline-none text-white">
                 </div>
-                <input type="number" id="bayar" placeholder="Uang Tunai" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl text-emerald-400 font-bold text-xl outline-none border-2 border-slate-700 focus:border-emerald-500">
-                <button onclick="printBluetooth()" id="btn-print" class="w-full bg-blue-600 py-4 rounded-xl font-black hover:bg-blue-500 text-white shadow-lg">CETAK STRUK</button>
+                <input type="number" id="bayar" placeholder="Tunai" oninput="renderStruk()" class="w-full bg-slate-800 p-3 rounded-xl text-emerald-400 font-bold text-xl outline-none">
+                <button onclick="printBluetooth()" id="btn-print" class="w-full bg-blue-600 py-4 rounded-xl font-black hover:bg-blue-500 text-white">CETAK STRUK</button>
             </div>
         </div>
 
-        <div class="lg:col-span-4 flex flex-col items-center">
-            <h2 class="text-[10px] font-bold text-slate-500 mb-4 tracking-widest uppercase">Live Preview</h2>
+        <div class="lg:col-span-5 flex justify-center">
             <div id="receipt" class="struk-canvas font-receipt text-[12px]">
                 <div class="text-center">
                     <div class="font-bold text-[16px]">UTOPIA STORE</div>
-                    <div class="text-[9px]">PT. Utopia Digital Technology [cite: 18]</div>
+                    <div class="text-[10px]">Prigen, Pasuruan</div>
                 </div>
                 <div class="line mt-4"></div>
-                <div class="flex justify-between text-[10px]">
+                <div class="flex-between text-[10px]">
                     <span id="st-tgl">--/--/--</span>
                     <span id="st-jam">00:00</span>
                 </div>
                 <div class="text-[10px]">REF: <span id="st-ref">TRX00000000</span></div>
                 <div class="line"></div>
                 <div class="space-y-1 my-2 uppercase">
-                    <div class="flex justify-between"><span>Produk</span><span id="st-produk">-</span></div>
-                    <div class="flex justify-between"><span>Tujuan</span><span id="st-rek">-</span></div>
-                    <div class="flex justify-between"><span>Nama</span><span id="st-nama">-</span></div>
+                    <div class="flex-between"><span>Produk</span><span id="st-produk">-</span></div>
+                    <div class="flex-between"><span>Tujuan</span><span id="st-rek">-</span></div>
+                    <div class="flex-between"><span>Nama</span><span id="st-nama">-</span></div>
                 </div>
                 <div class="line"></div>
-                <div id="price-section" class="space-y-1">
+                <div class="space-y-1">
+                    <div class="grid grid-cols-12">
+                        <span class="col-span-5">NOMINAL</span><span class="col-span-2 text-right">Rp</span><span id="st-nom" class="col-span-5 text-right">0</span>
                     </div>
+                    <div class="grid grid-cols-12">
+                        <span class="col-span-5">ADMIN</span><span class="col-span-2 text-right">Rp</span><span id="st-admin" class="col-span-5 text-right">0</span>
+                    </div>
+                    <div class="line"></div>
+                    <div class="grid grid-cols-12 font-bold text-[13px]">
+                        <span class="col-span-5">TOTAL</span><span class="col-span-2 text-right">Rp</span><span id="st-total" class="col-span-5 text-right">0</span>
+                    </div>
+                    <div class="grid grid-cols-12 italic text-slate-500">
+                        <span class="col-span-5">BAYAR</span><span class="col-span-2 text-right">Rp</span><span id="st-bayar" class="col-span-5 text-right">0</span>
+                    </div>
+                    <div class="grid grid-cols-12 italic font-bold">
+                        <span class="col-span-5">KEMBALI</span><span class="col-span-2 text-right">Rp</span><span id="st-kembali" class="col-span-5 text-right">0</span>
+                    </div>
+                </div>
                 <div class="line mt-4"></div>
                 <div class="text-center text-[10px]">
                     <p class="font-bold">STATUS: BERHASIL</p>
@@ -73,102 +90,83 @@
                 </div>
             </div>
         </div>
-
-        <div class="lg:col-span-4 space-y-4">
-            <div class="flex justify-between items-center">
-                <h2 class="text-[10px] font-bold text-slate-500 tracking-widest uppercase">History Transaksi</h2>
-                <button onclick="clearHistory()" class="text-[9px] text-red-500 hover:underline">Hapus Semua</button>
-            </div>
-            <div id="history-list" class="max-h-[600px] overflow-y-auto pr-2"></div>
-        </div>
     </div>
 
     <script>
-        let categoryActive = 'TRANSFER';
-
-        // ATURAN ADMIN OTOMATIS BERDASARKAN LIST.PDF [cite: 2, 5]
-        const ADMIN_RULES = {
-            'TRANSFER': [
-                { min: 10000, max: 50000, fee: 3000 }, [cite: 2]
-                { min: 51000, max: 500000, fee: 5000 }, [cite: 2]
-                { min: 501000, max: 1000000, fee: 10000 }, [cite: 2]
-                { min: 1001000, max: 1500000, fee: 15000 }, [cite: 2]
-                { min: 1501000, max: 2000000, fee: 20000 } [cite: 2]
-            ],
-            'TARIK': [
-                { min: 50000, max: 500000, fee: 10000 }, [cite: 5]
-                { min: 501000, max: 1000000, fee: 15000 }, [cite: 5]
-                { min: 1001000, max: 1500000, fee: 20000 }, [cite: 5]
-                { min: 1501000, max: 2000000, fee: 25000 } [cite: 5]
-            ]
-        };
-
         const DATA = {
-            'TRANSFER': ['BRI', 'BCA', 'BNI', 'MANDIRI', 'BSI', 'DANA', 'GOPAY', 'OVO', 'SHOPEEPAY'],
-            'TARIK': ['TARIK TUNAI', 'SETOR TUNAI']
+            'TRANSFER BANK': ['BRI', 'BCA', 'BNI', 'MANDIRI', 'BSI'],
+            'E-WALLET': ['DANA', 'GOPAY', 'OVO', 'SHOPEEPAY'],
+            'LISTRIK': ['TOKEN PLN', 'PLN PASCA'],
+            'TAGIHAN': ['BPJS', 'FIF', 'ADIRA', 'WOM']
         };
 
-        function selectService(cat) {
-            categoryActive = cat;
+        function selectService(t) {
             document.getElementById('form-container').classList.remove('hidden');
-            document.getElementById('sub-layanan').innerHTML = DATA[cat].map(s => `<option value="${s}">${s}</option>`).join('');
+            document.getElementById('sub-layanan').innerHTML = DATA[t].map(s => `<option value="${s}">${s}</option>`).join('');
             if(document.getElementById('st-ref').innerText === 'TRX00000000') genRef();
             renderStruk();
         }
 
         function genRef() { document.getElementById('st-ref').innerText = 'TRX' + Date.now().toString().slice(-8); }
-        function fmt(n) { return new Intl.NumberFormat('id-ID').format(n); }
+        function fmtNum(n) { return new Intl.NumberFormat('id-ID').format(n); }
 
         function renderStruk() {
-            const nomInput = document.getElementById('nominal');
-            const admInput = document.getElementById('admin');
-            const nomVal = parseInt(nomInput.value) || 0;
+            const nom = parseInt(document.getElementById('nominal').value) || 0;
+            const adm = parseInt(document.getElementById('admin').value) || 0;
+            const byr = parseInt(document.getElementById('bayar').value) || 0;
+            const tot = nom + adm;
 
-            // LOGIKA HITUNG ADMIN OTOMATIS [cite: 2, 5]
-            let fee = 0;
-            const rules = ADMIN_RULES[categoryActive];
-            const found = rules.find(r => nomVal >= r.min && nomVal <= r.max);
-            fee = found ? found.fee : (nomVal > 0 ? rules[rules.length-1].fee : 0);
-            
-            // Jika user tidak edit manual, gunakan admin otomatis
-            admInput.value = fee;
-
-            const admVal = parseInt(admInput.value) || 0;
-            const byrVal = parseInt(document.getElementById('bayar').value) || 0;
-            const total = nomVal + admVal;
-
-            // Update Preview Teks
             document.getElementById('st-tgl').innerText = new Date().toLocaleDateString('id-ID');
             document.getElementById('st-jam').innerText = new Date().toLocaleTimeString('id-ID');
             document.getElementById('st-produk').innerText = document.getElementById('sub-layanan').value;
             document.getElementById('st-rek').innerText = document.getElementById('rek').value || '-';
             document.getElementById('st-nama').innerText = (document.getElementById('nama').value || '-').toUpperCase();
             
-            // Preview Tabel Harga
-            document.getElementById('price-section').innerHTML = `
-                ${rowHTML("NOMINAL", nomVal)}
-                ${rowHTML("ADMIN", admVal)}
-                <div class="line"></div>
-                ${rowHTML("TOTAL", total, true)}
-                ${rowHTML("BAYAR", byrVal, false, "italic text-slate-400")}
-                ${rowHTML("KEMBALI", Math.max(0, byrVal - total), true, "italic")}
-            `;
+            document.getElementById('st-nom').innerText = fmtNum(nom);
+            document.getElementById('st-admin').innerText = fmtNum(adm);
+            document.getElementById('st-total').innerText = fmtNum(tot);
+            document.getElementById('st-bayar').innerText = fmtNum(byr);
+            document.getElementById('st-kembali').innerText = fmtNum(Math.max(0, byr - tot));
         }
 
-        function rowHTML(label, val, bold = false, cls = "") {
-            return `<div class="flex justify-between ${bold ? 'font-bold' : ''} ${cls}"><span class="w-1/2">${label}</span><span class="w-1/6 text-right">Rp</span><span class="w-1/3 text-right">${fmt(val)}</span></div>`;
+        // FUNGSI BARU UNTUK SEJAJARKAN RP
+        function fixPrice(label, price) {
+            const width = 32;
+            const labelPart = label; // misal "NOMINAL"
+            const rpPart = "Rp";
+            const pricePart = fmtNum(price);
+            
+            // Hitung sisa spasi
+            // Label di kiri, Rp di tengah (posisi karakter ke-15), Price di mentok kanan
+            let line = labelPart;
+            let spacesToRp = 17 - labelPart.length; // Rp akan mulai di kolom 18
+            line += " ".repeat(spacesToRp > 0 ? spacesToRp : 1) + rpPart;
+            
+            let currentLen = line.length;
+            let spacesToPrice = width - currentLen - pricePart.length;
+            line += " ".repeat(spacesToPrice > 0 ? spacesToPrice : 1) + pricePart;
+            
+            return line;
         }
 
-        // FUNGSI PRINT & HISTORY
+        function fixL(l, r) {
+            const w = 32;
+            const spaces = w - l.length - r.length;
+            return l + " ".repeat(spaces > 0 ? spaces : 1) + r;
+        }
+
+        function fixC(t) {
+            const w = 32;
+            const spaces = Math.floor((w - t.length) / 2);
+            return " ".repeat(spaces > 0 ? spaces : 0) + t;
+        }
+
         async function printBluetooth() {
             const btn = document.getElementById('btn-print');
             const nom = parseInt(document.getElementById('nominal').value) || 0;
             const adm = parseInt(document.getElementById('admin').value) || 0;
             const byr = parseInt(document.getElementById('bayar').value) || 0;
             const tot = nom + adm;
-
-            // Simpan ke History Sebelum Cetak
-            saveHistory(nom, adm, tot);
 
             let lines = [
                 "\x1B\x40",
@@ -197,7 +195,7 @@
             ];
 
             try {
-                btn.innerText = "CONNECTING...";
+                btn.innerText = "MENGHUBUNGKAN...";
                 const device = await navigator.bluetooth.requestDevice({
                     filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }],
                     optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb']
@@ -207,60 +205,27 @@
                 const char = await service.getCharacteristic('00002af1-0000-1000-8000-00805f9b34fb');
 
                 const encoder = new TextEncoder();
-                btn.innerText = "PRINTING...";
+                btn.innerText = "MENCETAK...";
 
                 for (let line of lines) {
                     let cleanLine = line.replace(/[^\x20-\x7E\n\r\x1B]/g, "") + "\n";
                     await char.writeValue(encoder.encode(cleanLine));
-                    await new Promise(r => setTimeout(r, 185)); // Jeda paling stabil
+                    await new Promise(r => setTimeout(r, 180)); // Jeda lebih aman
                 }
 
                 btn.innerText = "CETAK STRUK";
                 genRef();
                 renderStruk();
+                alert("Sukses!");
             } catch (e) {
                 btn.innerText = "CETAK STRUK";
-                alert("Printer Error: " + e.message);
+                alert("Gagal: " + e.message);
             }
         }
 
-        // Helper untuk perataan teks struk
-        function fixPrice(l, v) {
-            const w = 32; const rp = "Rp"; const val = fmt(v);
-            let line = l + " ".repeat(Math.max(1, 17 - l.length)) + rp;
-            return line + " ".repeat(Math.max(1, w - line.length - val.length)) + val;
-        }
-        function fixL(l, r) { return l + " ".repeat(Math.max(1, 32 - l.length - r.length)) + r; }
-        function fixC(t) { return " ".repeat(Math.max(0, Math.floor((32 - t.length) / 2))) + t; }
-
-        // MANAJEMEN HISTORY
-        function saveHistory(n, a, t) {
-            const item = {
-                id: document.getElementById('st-ref').innerText,
-                tgl: new Date().toLocaleString('id-ID'),
-                produk: document.getElementById('sub-layanan').value,
-                total: t
-            };
-            let hist = JSON.parse(localStorage.getItem('utopia_pos_history') || '[]');
-            hist.unshift(item);
-            localStorage.setItem('utopia_pos_history', JSON.stringify(hist.slice(0, 50)));
-            loadHistory();
-        }
-
-        function loadHistory() {
-            const hist = JSON.parse(localStorage.getItem('utopia_pos_history') || '[]');
-            document.getElementById('history-list').innerHTML = hist.map(h => `
-                <div class="history-card">
-                    <div class="flex justify-between text-[8px] text-slate-500 mb-1"><span>${h.id}</span><span>${h.tgl}</span></div>
-                    <div class="flex justify-between font-bold text-xs text-blue-300"><span>${h.produk}</span><span>Rp ${fmt(h.total)}</span></div>
-                </div>
-            `).join('') || '<p class="text-[10px] text-slate-600 italic">Belum ada transaksi hari ini</p>';
-        }
-
-        function clearHistory() { if(confirm('Hapus semua riwayat?')) { localStorage.removeItem('utopia_pos_history'); loadHistory(); } }
-
-        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('id-ID'); }, 1000);
-        loadHistory();
+        setInterval(() => {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString('id-ID');
+        }, 1000);
     </script>
 </body>
 </html>
